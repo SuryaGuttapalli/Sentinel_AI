@@ -194,31 +194,6 @@ st.markdown(
         border-radius: 2px;
         background: var(--surface);
     }
-    .creator-watermark {
-        position: fixed;
-        right: 1.1rem;
-        bottom: 1rem;
-        z-index: 999;
-        display: flex;
-        align-items: center;
-        gap: .45rem;
-        padding: .5rem .75rem;
-        border: var(--line);
-        background: var(--ink);
-        color: var(--yellow);
-        box-shadow: 3px 3px 0 var(--yellow);
-        font: 500 11px 'DM Mono', monospace;
-        letter-spacing: .04em;
-        text-transform: uppercase;
-        pointer-events: none;
-    }
-    .creator-watermark::before {
-        content: '';
-        width: 8px;
-        height: 8px;
-        background: var(--yellow);
-        transform: rotate(45deg);
-    }
     hr { border-color: var(--ink) !important; }
 
     @media (max-width: 680px) {
@@ -226,7 +201,6 @@ st.markdown(
         h1 { font-size: 42px !important; }
         div[data-testid="stHorizontalBlock"] { flex-direction: column; gap: 1rem; }
         div[data-testid="stMetric"] { min-height: 92px; }
-        .creator-watermark { right: .75rem; bottom: .75rem; }
     }
     @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
@@ -319,8 +293,4 @@ st.divider()
 st.caption(
     "This is a probabilistic estimate from a CNN, not forensic proof. "
     "Scores can be wrong on new generators, screenshots, or heavy compression."
-)
-st.markdown(
-    '<div class="creator-watermark">@Surya / Sentinel</div>',
-    unsafe_allow_html=True,
 )
