@@ -18,6 +18,8 @@ IMG_SIZE = 224
 NUM_VIDEO_FRAMES = 8
 HF_REPO = "VilaVision/AIgeneratedimagedetection"
 HF_WEIGHTS = "densenet_finetuned_dense.pth"
+HF_MODEL_REVISION = "203c57ac90e82f1d0928012dd22ce9d67d509a1d"
+MAX_MODEL_BYTES = 50 * 1024 * 1024
 
 _DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 _MODEL = None
@@ -31,13 +33,29 @@ _TRANSFORM = transforms.Compose(
 )
 
 
+def _download_model_weights() -> str:
+    """Download the tracked checkpoint for the current repo revision only."""
+    weights_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename=HF_WEIGHTS,
+        revision=HF_MODEL_REVISION,
+        repo_type="model",
+    )
+    model_file = Path(weights_path)
+    if not model_file.is_file():
+        raise ValueError("Model checkpoint is missing after download.")
+    if model_file.stat().st_size < 10 * 1024 * 1024 or model_file.stat().st_size > MAX_MODEL_BYTES:
+        raise ValueError("Model checkpoint is unexpectedly small or suspiciously large.")
+    return str(model_file)
+
+
 def load_model() -> torch.nn.Module:
     """Download weights on first call and cache the CNN in memory."""
     global _MODEL
     if _MODEL is not None:
         return _MODEL
 
-    weights_path = hf_hub_download(repo_id=HF_REPO, filename=HF_WEIGHTS)
+    weights_path = _download_model_weights()
     state = torch.load(weights_path, map_location="cpu", weights_only=True)
     model = densenet121(weights=None)
     model.classifier = nn.Linear(model.classifier.in_features, 3)

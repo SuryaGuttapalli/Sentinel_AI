@@ -1,6 +1,6 @@
-torch>=2.2.0,<2.6
-torchvision>=0.17.0,<0.21
-huggingface_hub>=0.23.0
+torch>=2.9.0,<2.16
+torchvision>=0.24.0,<0.26
+huggingface_hub>=0.26.0
 pillow>=10.0.0
 opencv-python-headless>=4.8.0
 streamlit>=1.32.0,<1.41

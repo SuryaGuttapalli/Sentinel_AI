@@ -12,6 +12,7 @@ from detector import predict_image, predict_video
 
 IMAGE_TYPES = {"jpg", "jpeg", "png", "webp", "bmp"}
 VIDEO_TYPES = {"mp4", "mov", "avi", "mkv", "webm"}
+MAX_UPLOAD_BYTES = 25 * 1024 * 1024
 
 st.set_page_config(page_title="Sentinel AI", page_icon="🛡️", layout="wide")
 st.markdown(
@@ -249,6 +250,10 @@ def _show_scores(result: dict) -> None:
 
 
 if uploaded is not None:
+    if uploaded.size > MAX_UPLOAD_BYTES:
+        st.error("Please upload a file smaller than 25 MB.")
+        st.stop()
+
     suffix = Path(uploaded.name).suffix.lower().lstrip(".")
     with st.spinner("Analyzing with CNN… videos are checking across sampled frames."):
         try:
