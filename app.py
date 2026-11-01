@@ -213,9 +213,11 @@ st.markdown(
         pointer-events: none;
     }
     .creator-watermark::before {
-        content: '?';
-        color: var(--yellow);
-        font-size: 13px;
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: var(--yellow);
+        transform: rotate(45deg);
     }
     hr { border-color: var(--ink) !important; }
 
